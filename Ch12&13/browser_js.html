@@ -1,0 +1,192 @@
+<!doctype html>
+<!-- Well these are complex comment prefix/suffix, eh? -->
+<html>
+	<style>
+		strong {
+			font-style: italic;
+			color:gray;
+		}
+		.subtle {
+			color: gray;
+			font-size: 85%;
+			opacity: 0.65;
+		}
+		#header {
+			background: blue;
+			color: white;
+			text-align: center;
+		}
+		/* p elements of class a or b and id main */
+		p.a.b#main {
+			margin-bottom: 20px;
+		}
+		p > a {} /* stylizes <a> tags are direct children of a <p> tag */
+		p a {}   /* stylizes all <a> tags that are inside of a <p> */
+	</style>
+  <head>
+    <title>My home page</title>
+  </head>
+  <body>
+    <h1 id="header">My home page</h1>
+    <blockquote id="quote"><em>
+    	No meal will ever be finished. While working on it we eat just
+    	enough to find it immature the moment we eat it all.
+    </em></blockquote>
+    <script>
+    	function elt(type) {
+    		var node = document.createElement(type);
+    		for (var i = 1; i < arguments.length; i++) {
+    			var child = arguments[i];
+    			if (typeof child == "string")
+    				child = document.createTextNode(child);
+    			node.appendChild(child);
+    		}
+    		return node;
+    	}
+
+    	document.getElementById("quote").appendChild(
+    		elt("footer", "-",
+    			elt("strong", "Karl Pimper"),
+    			", foreward to the second letter of cut: ",
+    			elt("em", "The Open Kitchen and Its Attendants"),
+    			", 2001"));
+    </script>
+
+    <p style="text-align: center; opacity:0.8;">
+ 		<img id="flying_kitten" src="https://caffeinecrew.files.wordpress.com/2014/07/kitten-in-a-blender.jpg?w=192"
+ 			style="position: relative"></p>
+	 	<script>
+	 		var kitten = document.querySelector("#flying_kitten");
+	 		var angle = 0, lastTime = null
+	 		function animate(time) {
+	 			if (lastTime != null)
+	 				angle += (time - lastTime) * 0.0015;
+	 			lastTime = time;
+	 			kitten.style.top = (Math.sin(angle) * 25) + "px";
+	 			kitten.style.left = (Math.cos(angle) * 180) + "px";
+	 			requestAnimationFrame(animate);
+	 		}
+	 		requestAnimationFrame(animate);
+	 	</script>
+
+    <p id="allcode" style="color:red">We shall highlight ALL CODE</p>
+    <pre data-language="javascript">
+    	function onTheRegs(x) {
+    		for (var cube in regs) {
+    		  while (cube != false) {
+    		    cube;
+    		  }
+    		}
+    	}
+    </pre>
+    <script src="EQJS_Ch12_src.js" type="text/javascript"></script>
+    <script>
+	    var allcode = document.getElementById("allcode");
+	    console.log(allcode);
+	    console.log(allcode.style.color);
+	    allcode.style.color = "magenta";
+	  </script>
+
+    <p data-classified="supersecret">I have three nipples</p>
+    <p class="subtle" style="text-align: center" data-classified="unclassified">
+    	I have one nipple</p>
+    <script>
+    	var paragraphs = document.body.getElementsByTagName("p");
+    	Array.prototype.forEach.call(paragraphs, function(p) {
+    		if (p.getAttribute("data-classified") == "supersecret")
+    			p.parentNode.removeChild(p);
+    	});
+    </script>
+
+    <p style="border: 3px solid red" id="bordered" align="center">
+    	Oh lookit miiie! </p>
+    <script>
+    	var paragraph = document.getElementById("bordered");
+    	console.log("clientHeight:", paragraph.clientHeight);
+    	console.log("offsetHeight:", paragraph.offsetHeight);
+    	console.log("clientWidth:", paragraph.clientWidth);
+    	console.log("offsetWidth:", paragraph.offsetWidth);
+    </script>
+
+    <p><a href=".">Normal link</a></p>
+    <p><a href="." style="color:green; border: 1px dashed green">Greenery</a></p>
+    <p>This text is <strong>inline</strong>, <strong style="display:block">this is a block,</strong>and <strong style="display:none">completely</strong>invisible</p>
+
+    <p>Before telling you about my book, let me show you my lovely children.
+    	<img id="garry" src="http://vignette1.wikia.nocookie.net/adventuretimewithfinnandjake/images/2/29/Tom-cruise-funny-face.png/revision/latest?cb=20130216121424"></p>
+    <p>Now, let's count with timmy here.</p>
+    <p>A one</p>
+    <p>A two</p>
+    <p>A three</p>
+
+    <p><span id="uno"></span></p>
+    <p><span id="dos"></span></p>
+    <script>
+    	function time(name, action) {
+    		var start = Date.now();
+    		action();
+    		console.log(name, "took", Date.now() - start, "ms");
+    	}
+
+    	time("naive", function() {
+    		var target = document.getElementById("uno");
+    		while (target.offsetWidth < 2000)
+    			target.appendChild(document.createTextNode("Xs"));
+    	});
+    	time("clever", function() {
+    		var target = document.getElementById("dos");
+    		target.appendChild(document.createTextNode("Xs"));
+    		var total = Math.ceil(2000 / target.offsetWidth);
+    		for(var i = 2; i < total; i++)
+    			target.appendChild(document.createTextNode("Xs"));
+    	});
+    </script>
+
+    <button onclick="alert('Spim Spam Scam');">giga-jugga-loes only</button>
+
+    <p>The <img src="http://ochumanesociety.com/clients/3697/images/kittens.jpg" alt="KITTENS"> in the <img src="https://caffeinecrew.files.wordpress.com/2014/07/kitten-in-a-blender.jpg?w=192" alt="MIXER">.</p>
+    <p><button onclick="replaceImages()">Swap</button></p>
+
+
+    <script>
+    	function replaceImages() {
+    		var images = document.body.getElementsByTagName("img");
+    		for (var i = images.length -1; i >= 0; i--) {
+    			var image = images[i];
+    			if (image.alt) {
+    				var text = document.createTextNode(image.alt);
+    				image.parentNode.replaceChild(text, image);
+    			}
+    		}
+    	}
+    </script>
+  </body>
+  <script>var timmy = document.getElementById("garry");
+ 		console.log(timmy.src);
+
+ 		var paragraphs = document.body.getElementsByTagName("p");
+ 		console.log(paragraphs);
+ 		document.body.insertBefore(paragraphs[2], paragraphs[1]);
+ 		document.body.insertBefore(document.createTextNode("A fiiive"), paragraphs[3]);
+//  document.body.get* methods return pseudo arrays
+//  		console.log(document.body.getElementsByTagName("p").forEach(function(node) {
+//  			console.log(node.nodeValue);
+//  		}));
+ 	</script>
+
+ 	<p>And if you go chasing <span class="animal">rabbits</span></p>
+ 	<p>And you know you're going to fall</p>
+ 	<p>Tell 'em a <span class="character"> hookah smoking <span class="animal">caterpillar</span>
+ 	</span></p>
+ 	<p>Has give you the call</p>
+ 	<script>
+ 		function count(selector) {
+ 			return document.querySelectorAll(selector).length;
+ 		}
+ 		console.log(count("p"));						// All <p> elements
+ 		console.log(count(".animal"));			// Class animal
+ 		console.log(count("p .animal"));		// Animal inside of <p>
+ 		console.log(count("p > .animal"));	// Animal class that are direct children of <p>
+ 	</script>
+
+</html>
