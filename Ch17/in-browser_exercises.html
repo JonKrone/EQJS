@@ -21,24 +21,30 @@
 </script>
 
 <script>
+
+	// For some reason, the code sandbox of EQJS.com will not run this code but, checking against
+	// Marijn's solution, this is very similar. I am not certain about my propogating errors up the chain
+	// as I took a different approach to iterate through promises.
   function all(promises) {
-  var results = [];
-  var promisesToKeep = promises.length || 0;
-  return new Promise(function(success, fail) {
-    
-    for (var i = 0; i < promises.length; i++) {
-      if (promisesToKeep == 0) success(results);
-      
-      promises[i].then(function(res) {
-        results.push(res);
-        promisesToKeep--;
-      }, function(error) {
-		  		for (var j = 0; j < promises.length; j++) {
-            fail(promise[j]);
-          }
-      	});
-  		}
- 	 	});
+
+	  return new Promise(function(success, fail) {
+	    var results = [];
+	  	var promisesToKeep = promises.length || 0;
+
+	    for (var i = 0; i < promises.length; i++) {
+	      if (promisesToKeep == 0) success(results);
+
+	      promises[i].then(function(res) {
+	        results.push(res);
+	        promisesToKeep--;
+	        if (promisesToKeep == 0) success(results);
+	      }, function(error) {
+			  		for (var j = 0; j < promises.length; j++) {
+	            fail(promise[j]);
+	          }
+	      	});
+	  		}
+	 	});
 	}
 
 </script>
