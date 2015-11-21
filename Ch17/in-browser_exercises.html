@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<body>
+
+
+<script>
+	function request(header) {
+	  var req = new XMLHttpRequest();
+	  req.open("GET", "author", true);
+	  req.addEventListener('load', function() {
+			console.log("Request complete. Received: " + req.responseText);
+	  });
+	  req.setRequestHeader("Accept", header);
+	  req.send(null);
+	}
+
+	request("text/plain");
+	request("text/html");
+	request("application/json");
+	request("application/rainbows+unicorns");
+</script>
+
+<script>
+  function all(promises) {
+  var results = [];
+  var promisesToKeep = promises.length || 0;
+  return new Promise(function(success, fail) {
+    
+    for (var i = 0; i < promises.length; i++) {
+      if (promisesToKeep == 0) success(results);
+      
+      promises[i].then(function(res) {
+        results.push(res);
+        promisesToKeep--;
+      }, function(error) {
+		  		for (var j = 0; j < promises.length; j++) {
+            fail(promise[j]);
+          }
+      	});
+  		}
+ 	 	});
+	}
+
+</script>
+</body>
+</html>

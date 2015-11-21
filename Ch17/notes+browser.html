@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<body>
+
+
+
+
+
+<form method="GET" action="messaging.html">
+  <p>Name <input type="text" name="name"></p>
+  <p>Message <br><textarea name="message"></textarea></p>
+  <p><button type="submit">Send</button></p>
+</form>
+<!-- On form submission, this requests the URL: /messaging.html?name=Jonathan&message=Captivated%3F -->
+<!-- HTTP/1.1 uses URI encoding to escape characters: encodeURIComponent("Roger Mr. Mary") and decodeURIComponent -->
+
+<script>
+	Deprecated call to XMLHttpRequest on main function
+	var req = new XMLHttpRequest();
+	req.open("GET", "respondants.txt", true); // true here sets the request to be asynchronous
+	req.addEventListener('load', function() {
+		console.log("Request done:", req.status);
+	});
+	req.send(null);
+	console.log(req.responseText);
+</script>
+
+<fruits>
+  <fruit name="pineapple" color="brown"/>
+  <fruit name="avocado" color="blue"/>
+  <fruit name="cherry" color="red"/>
+</fruits>
+<script>
+ var req = new XMLHttpRequest();
+ req.open('GET', 'fruity.xml', true);
+ req.addEventListener('load', function() {
+ 	console.log(req.responseXML.querySelectorAll("fruit").length);
+ });
+ req.send(null);
+
+ // Why use XML, though, when you can use JSON?!
+ req = new XMLHttpRequest();
+ req.open('GET', 'fruity.json', true);
+ req.addEventListener('load', function() {
+ 	console.log(JSON.parse(req.responseText));
+ });
+ req.send(null);
+</script>
+
+<script>
+	// Dealing with errors through callbacks
+	function backgroundReadFile(url, callback) {
+		var req = new XMLHttpRequest();
+		req.open("GET", url, true);
+		req.addEventListener('load', function() {
+			if (req.status < 400)
+				callback(req.responseText);
+			else
+				callback(null, new Error("Request failed: " + req.statusText));
+		});
+		req.addEventListener('error', function() {
+			callback(null, new Error("Network Error"));
+		})
+		req.send(null);
+	}
+</script>
+
+<script>
+	// Promise based asynchronous requests
+	function get(url) {
+		return new Promise(function(succeed, fail) {
+			var req = new XMLHttpRequest();
+			req.open("GET", url, true);
+			req.addEventListener('load', function() {
+				if (req.status < 400)
+					succeed(JSON.parse(req.responseText));
+				else
+					fail(new Error("Request failed: " + req.statusText));
+			});
+			req.addEventListener("error", function() {
+				fail(new Error("Network Error"));
+			});
+			req.send(null);
+		});
+	}
+
+	// We now pass a URL to get() and return a Promise. That Promise acts as a handle to request's outcome.
+	// Use Promise.then with two functions to handle success and failure.
+	get("fruity.json").then(function(text) {
+		console.log("response: " + text);
+	}, function(error) {
+		console.log("Failed to fetch our fruits: " + error);
+	});
+</script>
+
+<p>Pseudo-working with promises</p>
+<script>
+	function getJSON(url) {
+		return get(url).then(JSON.parse);
+	}
+
+	function showMessage(msg) {
+		var elt = document.createElement("div");
+		elt.textContent = msg;
+		return document.body.appendChild(elt);
+	}
+
+	var loading = showMessage("loading...");
+	getJSON("fruity.json").then(function(pines) {
+		return getJSON(pines.spines);
+	}).then(function(spines) {
+		return getJSON(spines.ends);
+	}).then(function(ends) {
+		showMessage("Our fruit has " + ends + " ends on " + spines + " spines.");
+	}).catch(function(error) {
+		showMessage(String(error));
+	}).then(function() {
+		document.body.removeChild(loading);
+	});
+
+</script>
+</body>
+</html>
