@@ -1,0 +1,94 @@
+<html>
+<style>
+	.trail {
+		position: absolute;
+		height: 6px; width: 6px;
+		border-radius: 3px;
+		background: teal;
+	}
+	body {
+		height: 300px;
+		text-align: center;
+	}
+</style>
+<body>
+
+<p>Don't leave a mess laying all around!</p>
+<script>
+	trail = [];
+	for (var i = 0; i < 6; i++) {
+		var tail = document.createElement("div");
+		tail.className = "trail";
+		trail.push(tail);
+	}
+
+	var count = 0;
+	addEventListener("mousemove", function(e) {
+		console.log("trailing");
+		var effect = trail[count++ % 6]; // ++ does not increment until after the operation
+		clearTimeout(effect.timeout);
+
+		effect.style.left = e.pageX;
+		effect.style.top = e.pageY;
+		document.body.appendChild(effect);
+
+		effect.timeout = setTimeout(function() {
+			document.body.removeChild(effect);
+		}, 650);
+	});
+ </script>
+
+<div id="wrapper">
+	<div data-tabName="Pigs">oinkers</div>
+	<div data-tabName="Lions">fearsome</div>
+	<div data-tabName="Meerkittens">rambunctious little fellows</div>
+	<div data-tabName="Horses">Caballos</div>
+</div>
+<script>
+	function asTabs(node) {
+		var tabs = node.children;
+		for (var i = 0; i < tabs.length; i++) {
+			tabs[i].style.display = 'none'; // set all divs to default hidden
+
+			var btn = document.createElement("button");
+			var tabName = tabs[i].getAttribute("data-tabName");
+			btn.textContent = tabName;
+			btn.tabName = tabName;
+
+			document.body.insertBefore(btn, node);
+
+			btn.addEventListener("click", function(e) {
+				setDisplay(this, tabs, 'none');
+			});
+		}
+
+		function setDisplay(btnClicked, nodes, type) {
+			var btnName = btnClicked.tabName;
+
+			for (var i = 0; i < nodes.length; i++) {
+				if(nodes[i].getAttribute("data-tabName") == btnName)
+					nodes[i].style.display = 'inline';
+				else
+					nodes[i].style.display = type;;
+			}
+		}
+
+
+	}
+
+	asTabs(document.querySelector("#wrapper"));
+</script>
+
+<p></p>
+<textarea>Wings or fangs?</textarea>
+<script>
+	// Prevents the typing of Q, W, and X
+	var textArea = document.querySelector("textarea");
+	textArea.addEventListener("keydown", function(e) {
+		if (e.keyCode == 81 || e.keyCode == 87 || e.keyCode == 88)
+			e.preventDefault();
+	});
+</script>
+
+</body>
+</html>

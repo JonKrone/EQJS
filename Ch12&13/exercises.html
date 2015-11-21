@@ -13,7 +13,26 @@
 </head>
 <body>
   
+  <h1>Heading with a <span>span</span> element.</h1>
+  <p>A paragraph with <span>one</span>, <span>two</span> spans.</p>
 
+<script>
+  function byTagName(node, tagName, desc) {
+    if (!desc) var desc = [];
+
+    for (var child = node.firstChild; child; child = child.nextSibling) {
+      if (child.childNodes) byTagName(child, tagName, desc);
+      if (child.nodeName == tagName.toUpperCase()) desc.push(child);
+    }
+    return desc;
+  }
+
+  console.log(byTagName(document.body, "h1").length);
+  console.log(byTagName(document.body, "span").length);
+  var para = document.querySelector("p");
+  console.log(byTagName(para, "span").length);
+  // console.log(namedDescendants);
+</script>
 
 <script>
   var MOUNTAINS = [
@@ -33,7 +52,6 @@
     // HEADERS
     var header_row = table.appendChild(document.createElement("tr"));
     for (var i = 0; i < headers.length; i++) {
-        console.log("adding header:", headers[i]);
         var header = header_row.appendChild(document.createElement("th"));
         header.appendChild(document.createTextNode(headers[i]));
     }
@@ -48,6 +66,7 @@
         if (!isNaN(content)) stat.setAttribute("style", "text-align: right");
       }
     }
+    
     console.log("How's our table look?");
     return table;
   }

@@ -60,10 +60,10 @@
 	 		var angle = 0, lastTime = null
 	 		function animate(time) {
 	 			if (lastTime != null)
-	 				angle += (time - lastTime) * 0.0015;
+	 				angle += (time - lastTime) * 0.0005;
 	 			lastTime = time;
-	 			kitten.style.top = (Math.sin(angle) * 25) + "px";
-	 			kitten.style.left = (Math.cos(angle) * 180) + "px";
+	 			kitten.style.top = (Math.sin(angle + 25) * 7) + "px";
+	 			kitten.style.left = ((Math.cos(angle) * 180) * 14)+ "px";
 	 			requestAnimationFrame(animate);
 	 		}
 	 		requestAnimationFrame(animate);
@@ -79,7 +79,7 @@
     		}
     	}
     </pre>
-    <script src="EQJS_Ch12_src.js" type="text/javascript"></script>
+    <script src="notes.js" type="text/javascript"></script>
     <script>
 	    var allcode = document.getElementById("allcode");
 	    console.log(allcode);
@@ -178,7 +178,7 @@
  	<p>And you know you're going to fall</p>
  	<p>Tell 'em a <span class="character"> hookah smoking <span class="animal">caterpillar</span>
  	</span></p>
- 	<p>Has give you the call</p>
+ 	<p id="call">Has give you the call</p>
  	<script>
  		function count(selector) {
  			return document.querySelectorAll(selector).length;
@@ -188,5 +188,8 @@
  		console.log(count("p .animal"));		// Animal inside of <p>
  		console.log(count("p > .animal"));	// Animal class that are direct children of <p>
  	</script>
+
+    <script>
+
 
 </html>
