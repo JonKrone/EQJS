@@ -1,18 +1,18 @@
 <!doctype html>
 <html>
-<style>
-	button {
-		background: darkCyan;
-		color: orange;
-		text-align: center;
-		font-weight: bold;
-	}
+	<style>
+		button {
+			background: darkCyan;
+			color: orange;
+			text-align: center;
+			font-weight: bold;
+		}
 
-	pre {
-		text-align: center;
-		background-color: beige;
-	}
-</style>
+		pre {
+			text-align: center;
+			background-color: #249480;
+		}
+	</style>
 <body>
 
 <div style="text-align: center"><button id="convert">
@@ -40,6 +40,7 @@ Are there any parameters required for your command?</textarea>
 		console.log(script);
 		params = parameter.value;
 		try {
+			/*jslint evil: true */
 			var cmd = new Function(params, script);
 			pre.textContent = cmd();
 			flashPre();
@@ -51,7 +52,7 @@ Are there any parameters required for your command?</textarea>
 	function flashPre() {
 		pre.style.backgroundColor = "orange";
 
-		if (pre.textContent == "")
+		if (pre.textContent === "")
 			pre.textContent = "Did you mean to receive a response?";
 
 		setTimeout(function() {
@@ -75,14 +76,14 @@ Are there any parameters required for your command?</textarea>
 	body.addEventListener('keydown', function() {
 		var script = body.value.split(/[\s.]/);
 		workingWord = script[script.length - 1];	
-		populateSuggestions(suggestions(workingWord))
+		populateSuggestions(suggestions(workingWord));
 	});
 	// We receive updates a character behind. I think that the eventListener is called before the keydown
 	// inserts a char into the script body. Can we tell the event to propogate before finishing our event
 	// listener? Call populate suggestions after a timeout (nope - tried)?
 
 	function populateSuggestions(suggestions) {
-
+		// removing all children
 		while (suggBody.firstChild)
 			suggBody.removeChild(suggBody.firstChild);
 
@@ -93,13 +94,11 @@ Are there any parameters required for your command?</textarea>
 			suggBody.appendChild(li);
 		}
 
-		console.log("---------Populationed--------")
+		console.log("---------Populationed--------");
 	}
 
 	function suggestions(word) {
-		var suggestions = [];
-
-		suggestions = terms.filter(function(term) {
+		var suggestions = terms.filter(function(term) {
 			if (term.includes(word)) {
 				return true;
 			}
