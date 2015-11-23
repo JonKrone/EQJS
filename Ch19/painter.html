@@ -257,58 +257,56 @@ tools["Flood fill"] = function(event, cx) {
 	var width = cx.canvas.width, height = cx.canvas.height;
 	var imageData = chunkArray(cx.getImageData(0, 0, width, height).data, 4);
 	var pixelToFill = imageData[index(originPos)];
-	console.log("Filling pixels of:", pixelToFill, "at x:", originPos.x, "y:", originPos.y);
+	// console.log("Filling pixels of:", pixelToFill, "at x:", originPos.x, "y:", originPos.y);
 	// validNeighbors(originPos);
 	// console.log(imageData);
 
 	var toFill = []; // array of pixel coordinates
 	toFill[0] = originPos;
 
-	var neighbors = []; // array of pixel coordinates
 	var stillLooking = true;
 	var count = 0;
-	while (stillLooking && count < 2) {
+	while (stillLooking && count < 15) {
 		count++;
 		var tmp = [];
 
 		var len = toFill.length;
 		stillLooking = false;
 
+		// Ran into a bug (solution: must assign the result of a concatenation, methods are not destructive)
+		// that lead me to this implementation using tmp because I was worried about overwriting toFill as we
+		// were iterating through it. Works now! Not going to revert to initial implementation.
 		for (var i = 0; i < toFill.length; i++) {
 			var cat = validNeighbors(toFill[i]);
 			for (var j = 0; j < cat.length; j++)
 				tmp.push(cat[j]);
 		}
 		toFill = toFill.concat(tmp);
-		console.log("toFill w/ tmp:", toFill);
-
-		// toFill.forEach(function(pixelToFill) {
-		// 	console.log("toFill before concat:", toFill);
-		// 	var cat = validNeighbors(pixelToFill)
-		// 	toFill.concat(cat);
-		// 	console.log("validNeighbors:", cat);
-		// 	console.log("toFill after concat:", toFill);
-		// });
 
 		// this continues our search if we found additional neighbors this time
 		if (toFill.length != len) stillLooking = true; 
 	}
-	console.log("toFill after looking for neighbors:", toFill);
+	// console.log("toFill after looking for neighbors:", toFill);
 
-	// this only works on pixel data, we need it to check position
-	function inNeighbors(pixel) { 
-		for (var i = 0; i < neighbors.length; i++)
-			for (var j = 0; j < neighbors[i].length; j++)
-				if (pixel[j] != neighbors[i][j]) return false;
-		return true;
+	for (var i = 0; i < toFill.length; i++) {
+		fillPixel(toFill[i]);
 	}
 
-		// var n = pos(home.x, home.y - 1), s = pos(home.x, home.y + 1),
-		// 		e = pos(home.x + 1, home.y), w = pos(home.x - 1, home.y);
-		// if (sameColor(imageData[index(n)], pixelToFill)) adjacent.push(n);
-		// if (sameColor(imageData[index(s)], pixelToFill)) adjacent.push(s);
-		// if (sameColor(imageData[index(e)], pixelToFill)) adjacent.push(e);
-		// if (sameColor(imageData[index(w)], pixelToFill)) adjacent.push(w);
+
+// 
+// Need to clear toFill of duplicates. Perhaps use tmp or in validNeighbors
+// 
+
+	// Rewrite for below functionality
+	// this only works on pixel data, we need it to check position
+	function alreadyIncluded(position) { 
+		for (var i = 0; i < toFill.length; i++)
+			if (toFill[i].x == position.x && toFill[i].y == position.y) return true;
+
+		return false;
+	}
+
+	// This does a lot of work for us. Checks bounds of each pixel
 	function validNeighbors(home) {// or neighbors ()
 		var adjacent = [];
 		var cardinals = [pos(home.x, home.y - 1), pos(home.x, home.y + 1),
@@ -319,7 +317,8 @@ tools["Flood fill"] = function(event, cx) {
 				continue;
 
 			if (sameColor(imageData[index(cardinals[i])], pixelToFill))
-				adjacent.push(cardinals[i]);
+				if (!alreadyIncluded(cardinals[i]))
+					adjacent.push(cardinals[i]);
 		}
 
 		console.log("pixelToFill's validNeighbords:", adjacent);
