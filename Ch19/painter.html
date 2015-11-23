@@ -279,9 +279,9 @@ tools["Flood fill"] = function(event, cx) {
 		for (var i = 0; i < toFill.length; i++) {
 			var cat = validNeighbors(toFill[i]);
 			for (var j = 0; j < cat.length; j++)
-				tmp.push(cat[j]);
+				// tmp.push(cat[j]);
 		}
-		toFill = toFill.concat(tmp);
+		// toFill = toFill.concat(tmp);
 
 		// this continues our search if we found additional neighbors this time
 		if (toFill.length != len) stillLooking = true; 
@@ -301,7 +301,7 @@ tools["Flood fill"] = function(event, cx) {
 	// this only works on pixel data, we need it to check position
 	function alreadyIncluded(position) { 
 		for (var i = 0; i < toFill.length; i++)
-			if (toFill[i].x == position.x && toFill[i].y == position.y) return true;
+			if (toFill[i].x == position.x && toFill[i].y == position.y) return false;
 
 		return false;
 	}
