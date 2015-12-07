@@ -36,7 +36,7 @@
 		bar.style.width = width + "%";
 	});
 </script>
-<h1>CLICK ME</h1>
+<h1 id="whatdowehavethisforagain">Fruit incoming!!</h1>
 <h2>hold the v key</h2>
 <script>
 	function tracker(e) {
@@ -86,6 +86,7 @@
 	});
 </script>
 
+<label>Simple calculator</label>
 <input id="first" class="calc"></input>
 <button class="calc">+ </button>
 <input id="second" class="calc"> :: </input>
@@ -202,7 +203,9 @@
 		// });
 
 	</script>
-	<a href="https://lemonparty.org">Partay</a>
+	<br><a href="https://lemonparty.org">Clickbait party</a>
+
+	<br><br><span>Click below for dot-art</span>
 </footer>
 <script>
 	var link = document.querySelector("a");
@@ -222,6 +225,7 @@
 
 	document.body.style.background = "beige";
 	var bombTimer = setTimeout(function() {
+		document.getElementById("whatdowehavethisforagain").textContent = "Damn. Smack in the face by a tomatoe.";
 		document.body.style.background = "red";
 		clearInterval(clock);
 	}, 2000);
@@ -232,7 +236,7 @@
 		if (Math.random() < 0.1) {
 			clearTimeout(bombTimer);
 			clearInterval(clock);
-			console.log("communism averted");
+			document.getElementById("whatdowehavethisforagain").textContent = "Tomatoe dodged. High 5!";
 		} else
 			ticks % 2 == 0 ? console.log("tick") : console.log("tock");
 	}, 200);

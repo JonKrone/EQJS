@@ -17,13 +17,17 @@
 		body {
 			text-align: center;
 		}
-		checkbox {}
+		input {
+			margin: 2px 2px 2px 4px;
+			color: black;
+		}
 	</style>
 <body>
 
 <div id="grid"></div>
-<button id="next">Roll the dice</button>
-
+<button id="next"> One small step </button>
+<button id="run"> One giant leap </button>
+<!-- <br><br><button id="rerun"> Redo </button> -->
 
 <script>
 	var boxes = [];
@@ -47,6 +51,7 @@
 				var box = document.createElement("input");
 				box.type = "checkbox";
 				box.checked = Math.random() < 0.3;
+				box.class = "unit";
 
 				box.x = j;
 				box.y = i;
@@ -120,10 +125,20 @@
 
 
 
-	var btn = document.getElementById("next");
-	btn.addEventListener("click", function() {
+	var roll = document.getElementById("next");
+	roll.addEventListener("click", function() {
 		nextGeneration();
 	});
+
+	var run = document.getElementById("run");
+	run.addEventListener("click", function() {
+		setInterval(nextGeneration, 450);
+	});
+
+	// var rerun = document.getElementById("rerun");
+	// rerun.addEventListener("click", function() {
+	// 	generateWorld(40);
+	// });
 
 
 	// Let 'er run
