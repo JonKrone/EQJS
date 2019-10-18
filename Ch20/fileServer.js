@@ -35,7 +35,7 @@ methods.GET = function(path, respond) {
 		else if (stats.isDirectory()) {
 			fs.readdir(path, function(err, files) {
 				if (err)
-					respond(500, err.toStrign());
+					respond(500, err.toString());
 				else
 					respond(200, files.join("\n"));
 			});
